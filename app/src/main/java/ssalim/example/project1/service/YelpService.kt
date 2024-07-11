@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface YelpService {
     @GET("businesses/search")
-    suspend fun searchBusinesses(
+    suspend fun yelpSearchResponse(
         @Header("Authorization") authHeader: String,
         @Query("term") term: String,
         @Query("location") location: String

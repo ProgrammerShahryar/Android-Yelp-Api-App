@@ -4,8 +4,10 @@ import android.location.Geocoder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -17,6 +19,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import jp.wasabeef.blurry.Blurry
 import java.util.Locale
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -48,10 +51,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mapContainer.addView(mapView)
 
+
+
         fetchYelpButton.setOnClickListener {
             val city = cityName.text.toString()
             progressBar.visibility = View.VISIBLE
-            viewModel.searchBusinesses(city)
+            viewModel.businesses(city)
         }
 
         viewModel.businessesLiveData.observe(this, Observer { businesses ->

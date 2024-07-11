@@ -9,9 +9,9 @@ class YelpViewModel(private val repository: YelpRepository) : ViewModel() {
 
     val businessesLiveData = MutableLiveData<List<YelpData>>()
 
-    fun searchBusinesses(location: String) {
+    fun businesses(location: String) {
         viewModelScope.launch {
-            repository.searchBusinesses(location, businessesLiveData)
+            repository.getBuisness(location, businessesLiveData)
         }
     }
 }
