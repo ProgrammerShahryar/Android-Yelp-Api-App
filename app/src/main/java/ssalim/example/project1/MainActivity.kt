@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             } else { Snackbar.make(mapContainer, "No businesses found", Snackbar.LENGTH_LONG).show() } })
     }
 
-<<<<<<< Updated upstream
+
     private fun fetchAutoSuggestions(query: String) {
         val geocoder = Geocoder(this, Locale.getDefault())
         try {
@@ -106,8 +106,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             Snackbar.make(mapContainer, "Error with suggestions", Snackbar.LENGTH_LONG).show()
         }
     }
-=======
->>>>>>> Stashed changes
+
     private fun geocodeLocation(locationName: String): LatLng? { return try { val geocoder = Geocoder(this, Locale.getDefault())
             val addresses = geocoder.getFromLocationName(locationName, 1)
             if (addresses != null && addresses.isNotEmpty()) { val address = addresses[0]
