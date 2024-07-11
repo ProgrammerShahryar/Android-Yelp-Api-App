@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 import java.util.Locale
 
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 mapContainer.visibility = View.VISIBLE
                 businessRecyclerView.visibility = View.VISIBLE
             } else {
+                Snackbar.make(mapContainer, "No businesses found", Snackbar.LENGTH_LONG).show()
             }
         })
     }
@@ -111,7 +113,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         businessRecyclerView.adapter = adapter
     }
-    
+
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.uiSettings.isZoomControlsEnabled = true
     }
