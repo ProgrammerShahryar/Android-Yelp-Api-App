@@ -11,8 +11,7 @@ interface YelpService {
         @Query("term") term: String,
         @Query("location") location: String
     ): YelpSearchResponse
-}
 
 data class YelpSearchResponse(
     val businesses: List<YelpData>
-)
+)}

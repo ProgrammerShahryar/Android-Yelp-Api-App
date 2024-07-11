@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import ssalim.example.project1.viewmodel.YelpViewModel
 import java.io.IOException
 import java.util.Locale
 
@@ -63,6 +65,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             viewModel.businesses(city)
         }
 
+        cityName.addTextChangedListener { editable ->
+            val query = editable.toString().trim()
+            if (query.isNotEmpty()) {
+                fetchAutoSuggestions(query)
+            }
+        }
+
         viewModel.businessesLiveData.observe(this, Observer { businesses -> progressBar.visibility = View.GONE
             if (businesses != null) { displayBusinessMarkers(businesses)
                 displayBusinessDetails(businesses)
@@ -71,6 +80,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 mapContainer.visibility = View.VISIBLE
                 businessRecyclerView.visibility = View.VISIBLE
             } else { Snackbar.make(mapContainer, "No businesses found", Snackbar.LENGTH_LONG).show() } })
+    }
+
+    private fun fetchAutoSuggestions(query: String) {
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try {
+            val addresses = geocoder.getFromLocationName(query, 5)
+
+            val suggestions = addresses?.map { address ->
+                address.getAddressLine(0)
+            }
+
+            if (suggestions != null) {
+                viewModel.updateAutoSuggestions(suggestions)
+            }
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Snackbar.make(mapContainer, "Error with suggestions", Snackbar.LENGTH_LONG).show()
+        }
     }
     private fun geocodeLocation(locationName: String): LatLng? { return try { val geocoder = Geocoder(this, Locale.getDefault())
             val addresses = geocoder.getFromLocationName(locationName, 1)

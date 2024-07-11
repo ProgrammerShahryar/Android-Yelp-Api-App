@@ -7,6 +7,10 @@ android {
     namespace = "ssalim.example.project1"
     compileSdk = 34
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     defaultConfig {
         applicationId = "ssalim.example.project1"
         minSdk = 24
