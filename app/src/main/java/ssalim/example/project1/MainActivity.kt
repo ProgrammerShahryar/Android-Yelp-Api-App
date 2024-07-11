@@ -1,4 +1,7 @@
 package ssalim.example.project1
+
+
+import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +30,6 @@ import java.util.Locale
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var mapContainer: RelativeLayout
-
     private lateinit var businessRecyclerView: RecyclerView
     private lateinit var cityName: EditText
     private lateinit var fetchYelpButton: Button
@@ -51,7 +53,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         businessRecyclerView = findViewById(R.id.businessRecyclerView)
 
 
-
+        findViewById<Button>(R.id.aboutButton).setOnClickListener {
+            val intent = Intent(this, About::class.java)
+            startActivity(intent)
+        }
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
@@ -82,6 +87,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             } else { Snackbar.make(mapContainer, "No businesses found", Snackbar.LENGTH_LONG).show() } })
     }
 
+<<<<<<< Updated upstream
     private fun fetchAutoSuggestions(query: String) {
         val geocoder = Geocoder(this, Locale.getDefault())
         try {
@@ -100,6 +106,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             Snackbar.make(mapContainer, "Error with suggestions", Snackbar.LENGTH_LONG).show()
         }
     }
+=======
+>>>>>>> Stashed changes
     private fun geocodeLocation(locationName: String): LatLng? { return try { val geocoder = Geocoder(this, Locale.getDefault())
             val addresses = geocoder.getFromLocationName(locationName, 1)
             if (addresses != null && addresses.isNotEmpty()) { val address = addresses[0]
@@ -107,6 +115,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             } else { null }
         } catch (e: IOException) {e.printStackTrace()
             null } }
+
+
 
     private fun displayBusinessMarkers(businesses: List<YelpData>?) {
         mapView.getMapAsync { googleMap -> googleMap.clear()
@@ -132,7 +142,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng, 15f)) } }
         businessRecyclerView.adapter = adapter }
 
+
+
     override fun onMapReady(googleMap: GoogleMap) { googleMap.uiSettings.isZoomControlsEnabled = true }
+
+
 
     override fun onResume() { super.onResume()
         mapView.onResume() }

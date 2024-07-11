@@ -15,8 +15,9 @@ class About : AppCompatActivity() {
         back = findViewById(R.id.aboutBack)
 
 
-//        back.setOnClickListener {
-//            val intent: Intent =
-//        }
+        back.setOnClickListener {
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
