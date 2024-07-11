@@ -25,7 +25,6 @@
             android:background="@drawable/search_background"
             android:hint="Enter city name"
             android:padding="8dp" />
-
         <Button
             android:id="@+id/fetchYelpButton"
             android:layout_width="wrap_content"
@@ -33,10 +32,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
             android:text="Fetch Yelp Data" />
-
     </LinearLayout>
-
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -44,16 +40,12 @@
         android:layout_below="@id/searchLayout"
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
-
-
     <RelativeLayout
         android:id="@+id/mapContainer"
         android:layout_width="match_parent"
         android:layout_height="275dp"
         android:layout_below="@+id/searchLayout"
         android:layout_marginTop="0dp" />
-
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/businessRecyclerView"
         android:layout_width="match_parent"
