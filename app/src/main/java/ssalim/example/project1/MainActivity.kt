@@ -28,14 +28,14 @@ import java.io.IOException
 import java.util.Locale
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var mapView: MapView
-    private lateinit var mapContainer: RelativeLayout
-    private lateinit var businessRecyclerView: RecyclerView
-    private lateinit var cityName: EditText
-    private lateinit var fetchYelpButton: Button
+    private lateinit var sMapView: MapView
+    private lateinit var sMapContainer: RelativeLayout
+    private lateinit var sBusinessRecyclerView: RecyclerView
+    private lateinit var sCityName: EditText
+    private lateinit var sFetchYelpButton: Button
 
 
-    private lateinit var progressBar: ProgressBar
+    private lateinit var sProgressBar: ProgressBar
 
 
     private val viewModel: YelpViewModel by viewModels { YelpViewModelFactory(YelpRepository(RetrofitProvider.retrofit)) }
@@ -43,14 +43,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mapView = MapView(this)
-        progressBar = findViewById(R.id.progressBar)
-        mapContainer = findViewById(R.id.mapContainer)
+        sMapView = MapView(this)
 
-        cityName = findViewById(R.id.cityEditText)
-        fetchYelpButton = findViewById(R.id.fetchYelpButton)
 
-        businessRecyclerView = findViewById(R.id.businessRecyclerView)
+
+        sProgressBar = findViewById(R.id.progressBar)
+        sMapContainer = findViewById(R.id.mapContainer)
+
+        sCityName = findViewById(R.id.cityEditText)
+
+        sFetchYelpButton = findViewById(R.id.fetchYelpButton)
+
+        sBusinessRecyclerView = findViewById(R.id.businessRecyclerView)
 
 
         findViewById<Button>(R.id.aboutButton).setOnClickListener {
@@ -58,37 +62,46 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
 
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
-        mapContainer.addView(mapView)
-
-        businessRecyclerView.layoutManager = LinearLayoutManager(this)
-        fetchYelpButton.setOnClickListener { val city = cityName.text.toString()
-            progressBar.visibility = View.VISIBLE
+        sMapView.onCreate(savedInstanceState)
+        sMapView.getMapAsync(this)
 
 
-            viewModel.businesses(city)
+
+
+
+
+        sMapContainer.addView(sMapView)
+
+        sBusinessRecyclerView.layoutManager = LinearLayoutManager(this)
+        sFetchYelpButton.setOnClickListener { val city = sCityName.text.toString()
+            sProgressBar.visibility = View.VISIBLE
+
+
+            viewModel.sBusinesses(city)
         }
 
-        cityName.addTextChangedListener { editable ->
+        sCityName.addTextChangedListener { editable ->
             val query = editable.toString().trim()
             if (query.isNotEmpty()) {
-                fetchAutoSuggestions(query)
+                sEnableAutoSuggestions(query)
             }
         }
 
-        viewModel.businessesLiveData.observe(this, Observer { businesses -> progressBar.visibility = View.GONE
-            if (businesses != null) { displayBusinessMarkers(businesses)
-                displayBusinessDetails(businesses)
+        viewModel.businessesLiveData.observe(this, Observer { businesses -> sProgressBar.visibility = View.GONE
+            if (businesses != null) { showBusinessSpots(businesses)
+                showBusinessInfo(businesses)
 
 
-                mapContainer.visibility = View.VISIBLE
-                businessRecyclerView.visibility = View.VISIBLE
-            } else { Snackbar.make(mapContainer, "No businesses found", Snackbar.LENGTH_LONG).show() } })
+                sMapContainer.visibility = View.VISIBLE
+
+
+
+                sBusinessRecyclerView.visibility = View.VISIBLE
+            } else { Snackbar.make(sMapContainer, "No businesses found", Snackbar.LENGTH_LONG).show() } })
     }
 
 
-    private fun fetchAutoSuggestions(query: String) {
+    private fun sEnableAutoSuggestions(query: String) {
         val geocoder = Geocoder(this, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocationName(query, 5)
@@ -98,27 +111,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             if (suggestions != null) {
-                viewModel.updateAutoSuggestions(suggestions)
+                viewModel.sGetAutoSuggestions(suggestions)
             }
 
         } catch (e: IOException) {
+
+
+
             e.printStackTrace()
-            Snackbar.make(mapContainer, "Error with suggestions", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(sMapContainer, "Error with suggestions", Snackbar.LENGTH_LONG).show()
         }
     }
 
-    private fun geocodeLocation(locationName: String): LatLng? { return try { val geocoder = Geocoder(this, Locale.getDefault())
-            val addresses = geocoder.getFromLocationName(locationName, 1)
-            if (addresses != null && addresses.isNotEmpty()) { val address = addresses[0]
-                LatLng(address.latitude, address.longitude)
-            } else { null }
-        } catch (e: IOException) {e.printStackTrace()
-            null } }
 
 
-
-    private fun displayBusinessMarkers(businesses: List<YelpData>?) {
-        mapView.getMapAsync { googleMap -> googleMap.clear()
+    private fun showBusinessSpots(businesses: List<YelpData>?) {
+        sMapView.getMapAsync { googleMap -> googleMap.clear()
             businesses?.forEach { business -> val locationLatLng = LatLng(business.coordinates.latitude, business.coordinates.longitude)
                 googleMap.addMarker(MarkerOptions().position(locationLatLng).title(business.name))
             }
@@ -129,8 +137,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstBusinessLocation, 12f)) } }
     }
 
-    private fun displayBusinessDetails(businesses: List<YelpData>) {
-        val adapter = BusinessAdapter(businesses) { business -> mapView.getMapAsync { googleMap -> val locationLatLng = LatLng(business.coordinates.latitude, business.coordinates.longitude)
+    private fun showBusinessInfo(businesses: List<YelpData>) {
+        val adapter = BusinessAdapter(businesses) { business -> sMapView.getMapAsync { googleMap -> val locationLatLng = LatLng(business.coordinates.latitude, business.coordinates.longitude)
                 googleMap.clear()
                 val markerOptions = MarkerOptions()
                     .position(locationLatLng)
@@ -139,7 +147,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 googleMap.addMarker(markerOptions)
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng, 15f)) } }
-        businessRecyclerView.adapter = adapter }
+        sBusinessRecyclerView.adapter = adapter }
 
 
 
@@ -148,14 +156,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     override fun onResume() { super.onResume()
-        mapView.onResume() }
+        sMapView.onResume() }
 
     override fun onPause() { super.onPause()
-        mapView.onPause() }
+        sMapView.onPause() }
 
     override fun onDestroy() { super.onDestroy()
-        mapView.onDestroy() }
+        sMapView.onDestroy() }
 
     override fun onLowMemory() { super.onLowMemory()
-        mapView.onLowMemory() }
+        sMapView.onLowMemory() }
 }

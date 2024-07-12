@@ -35,10 +35,19 @@
             android:id="@+id/app_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="descrptiomn"
-            android:textSize="16sp"
             android:layout_marginTop="16dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="Town Trader is an application which shows all the top buisnesses in the city you choose"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/app_description2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Group Members: Shahryar Salim, Mufeed Muneer, Ryan Ren, Arul Sajeevkumar"
+            android:textSize="16sp" />
 
         <Button
             android:layout_width="wrap_content"

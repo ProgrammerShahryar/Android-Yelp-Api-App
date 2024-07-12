@@ -12,7 +12,6 @@ data class YelpData(
 )
 
 
-
 data class Location(
     val address1: String,
     val city: String,

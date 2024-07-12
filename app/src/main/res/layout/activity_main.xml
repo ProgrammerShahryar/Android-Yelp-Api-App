@@ -32,14 +32,6 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
             android:text="Fetch Yelp Data" />
-        <Button
-            android:id="@+id/btnNavigateToEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Events"
-            android:layout_below="@id/businessRecyclerView"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true" />
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBar"

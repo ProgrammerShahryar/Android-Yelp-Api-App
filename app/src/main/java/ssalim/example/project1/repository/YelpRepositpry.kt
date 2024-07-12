@@ -11,7 +11,7 @@ class YelpRepository(private val retrofit: Retrofit) {
     private val apiKey2 = "ffyY0mVF6f2dj-S356NVcrwRb4-NH_DjMgBsf6Ox-boz6mTzSlNjJj4V-4z4WLM9oeSjHo-08A9KJ6TDGxQ6YPNaNwEIsv7xCqYfpQs3CpEQPEGFI1PLap57pUqQZnYx"
 
 
-    suspend fun getBuisness(location: String, businessesLiveData: MutableLiveData<List<YelpData>>) {
+    suspend fun sGetBusiness(location: String, businessesLiveData: MutableLiveData<List<YelpData>>) {
         val yelpService = retrofit.create(YelpService::class.java)
         try {
             val response = yelpService.yelpSearchResponse("Bearer $apiKey", "restaurants", location)

@@ -12,12 +12,12 @@ class YelpViewModel(private val repository: YelpRepository) : ViewModel() {
     val businessesLiveData = MutableLiveData<List<YelpData>>()
     private val _autocompleteSuggestionsLiveData = MutableLiveData<List<String>>()
 
-    fun businesses(location: String) {
+    fun sBusinesses(location: String) {
         viewModelScope.launch {
-            repository.getBuisness(location, businessesLiveData)
+            repository.sGetBusiness(location, businessesLiveData)
         }
     }
-    fun updateAutoSuggestions(suggestions: List<String>) {
+    fun sGetAutoSuggestions(suggestions: List<String>) {
         _autocompleteSuggestionsLiveData.postValue(suggestions)
     }
 }

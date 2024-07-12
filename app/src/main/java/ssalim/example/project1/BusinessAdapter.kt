@@ -6,24 +6,37 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class BusinessAdapter(
-    private val businesses: List<YelpData>,
-    private val onItemClicked: (YelpData) -> Unit
+    private val sBusinesses: List<YelpData>,
+
+
+
+    private val sOnItemChosen: (YelpData) -> Unit
 ) : RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusinessViewHolder {
+
+
+
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_business, parent, false)
+
+
+
+
         return BusinessViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: BusinessViewHolder, position: Int) {
-        val business = businesses[position]
+        val business = sBusinesses[position]
         holder.bind(business)
+
+
+
         holder.itemView.setOnClickListener {
-            onItemClicked(business)
+            sOnItemChosen(business)
         }
     }
 
-    override fun getItemCount(): Int = businesses.size
+    override fun getItemCount(): Int = sBusinesses.size
 
     class BusinessViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.businessNameTextView)
